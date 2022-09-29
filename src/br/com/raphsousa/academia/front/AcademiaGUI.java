@@ -32,7 +32,14 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void populaTabelaAlunos() {
         String[] camposAlunos = {"Matricula", "Nome", "Idade",
             "Genero"};
-        jtAlunos.setModel(AcademiaFacade.modeloDadosAluno(camposAlunos));
+        jtAlunos.setModel(AcademiaFacade.modeloDadosAlunosTodos(camposAlunos));
+    }
+
+    private void populaTabelaAlunosPorNome(String nome) {
+        String[] camposAlunos = {"Matricula", "Nome", "Idade",
+            "Genero"};
+        jtAlunos.setModel(AcademiaFacade.modeloDadosAlunosPorNome(camposAlunos,
+                nome));
     }
 
     private void populaTabelaProfessores() {
@@ -131,6 +138,8 @@ public class AcademiaGUI extends javax.swing.JFrame {
         btnDeletaAluno = new javax.swing.JButton();
         btnAlterarAluno = new javax.swing.JButton();
         btnAdicionaAluno = new javax.swing.JButton();
+        btnSelecionaPorNome = new javax.swing.JButton();
+        txfSelecionaAlunoPorNome = new javax.swing.JTextField();
         pnlTreino = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtTreinos = new javax.swing.JTable();
@@ -306,16 +315,16 @@ public class AcademiaGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
-                .addComponent(txfNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txfNomeAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addComponent(dtcNascimentoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jcbGeneroAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -378,6 +387,13 @@ public class AcademiaGUI extends javax.swing.JFrame {
                 .addGap(26, 26, 26))
         );
 
+        btnSelecionaPorNome.setText("Selecionar Por nome");
+        btnSelecionaPorNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelecionaPorNomeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
@@ -390,7 +406,12 @@ public class AcademiaGUI extends javax.swing.JFrame {
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnSelecionaPorNome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txfSelecionaAlunoPorNome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,7 +420,10 @@ public class AcademiaGUI extends javax.swing.JFrame {
                 .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSelecionaPorNome)
+                    .addComponent(txfSelecionaAlunoPorNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout pnlAlunoLayout = new javax.swing.GroupLayout(pnlAluno);
@@ -409,9 +433,9 @@ public class AcademiaGUI extends javax.swing.JFrame {
             .addGroup(pnlAlunoLayout.createSequentialGroup()
                 .addGap(66, 66, 66)
                 .addGroup(pnlAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(105, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         pnlAlunoLayout.setVerticalGroup(
             pnlAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -718,29 +742,10 @@ public class AcademiaGUI extends javax.swing.JFrame {
         retorno[2] = idProfessorInt;
         retorno[3] = tituloTreino;
         retorno[4] = descTreino;
-        
+
         return retorno;
     }
 
-    private Treino getTreinoPorLinha(int linhaSelecionada) {
-        String idString = (String) jtTreinos.getValueAt(linhaSelecionada, 0);
-        int idInt = Integer.parseInt(idString);
-
-        String matriculaAluno = (String) jtTreinos.getValueAt(linhaSelecionada, 1);
-        int matriculaAlunoInt = Integer.parseInt(matriculaAluno);
-
-        String idProfessor = (String) jtTreinos.getValueAt(linhaSelecionada, 2);
-        int idProfessorInt = Integer.parseInt(idProfessor);
-
-        String tituloTreino = (String) jtTreinos.getValueAt(linhaSelecionada, 3);
-        String descTreino = (String) jtTreinos.getValueAt(linhaSelecionada, 4);
-
-        Aluno aluno = new Aluno(matriculaAlunoInt);
-        Professor professor = new Professor(idProfessorInt);
-        Treino treino = new Treino(idInt, aluno, professor, tituloTreino, descTreino);
-
-        return treino;
-    }
 
     private void jcbAlunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAlunosActionPerformed
         // TODO add your handling code here:
@@ -862,10 +867,10 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void btnAlterarTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarTreinoActionPerformed
         int linhaSelecionada = jtTreinos.getSelectedRow();
         if (jtTreinos.isRowSelected(linhaSelecionada)) {
-            
+
             Treino treinoASerAlterado = AcademiaFacade.retornaTreinoSelecionado(
                     dadosTreino(linhaSelecionada));
-            
+
             String tituloTreino = txfTituloTreino.getText();
             String descTreino = txaDescricaoTreino.getText();
             String matriculaAlunoString = jcbAlunos.getSelectedItem().toString();
@@ -873,7 +878,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
 
             String idProfessorString = jcbProfessores.getSelectedItem().toString();
             int idProfessorInt = Integer.parseInt(idProfessorString);
-            
+
             AcademiaFacade.alteraTreino(treinoASerAlterado, matriculaAlunoInt,
                     idProfessorInt, tituloTreino, descTreino);
             populaTabelaTreinos();
@@ -888,7 +893,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
                     dadosTreino(linhaSelecionada));
             txfTituloTreino.setText(treino.getTitulo());
             txaDescricaoTreino.setText(treino.getDescricao());
-            
+
 //            seleciona o item do comobobox de acordo com minha linha selecionada
 //            percorre o combo box atraves do index e confere se o valor é igual a
 //            minha string id
@@ -930,6 +935,15 @@ public class AcademiaGUI extends javax.swing.JFrame {
             populaTabelaTreinos();
         }
     }//GEN-LAST:event_btnSelecionaTreinoPorIDActionPerformed
+
+    private void btnSelecionaPorNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionaPorNomeActionPerformed
+        String nome = txfSelecionaAlunoPorNome.getText();
+        if (!nome.isBlank()) {
+            populaTabelaAlunosPorNome(nome);
+        } else {
+            populaTabelaAlunos();
+        }
+    }//GEN-LAST:event_btnSelecionaPorNomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -976,6 +990,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnDeletaProfessor;
     private javax.swing.JButton btnEditaProfessor;
     private javax.swing.JButton btnRemoverTreino;
+    private javax.swing.JButton btnSelecionaPorNome;
     private javax.swing.JButton btnSelecionaTreinoPorID;
     private com.toedter.calendar.JDateChooser dtcNascimentoAluno;
     private javax.swing.JLabel jLabel1;
@@ -1013,6 +1028,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea txaDescricaoTreino;
     private javax.swing.JTextField txfNomeAluno;
     private javax.swing.JTextField txfNomeProfessor;
+    private javax.swing.JTextField txfSelecionaAlunoPorNome;
     private javax.swing.JTextField txfSelecionaPorIdTreino;
     private javax.swing.JTextField txfTituloTreino;
     // End of variables declaration//GEN-END:variables

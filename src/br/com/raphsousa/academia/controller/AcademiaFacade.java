@@ -24,8 +24,7 @@ public class AcademiaFacade {
         AcademiaBD.popular();
     }
 
-    public static DefaultTableModel modeloDadosAluno(String[] camposAlunos) {
-        List<Aluno> alunos = AlunoDAO.selecionarTodos();
+    private static DefaultTableModel modeloDadosAluno(String[] camposAlunos, List<Aluno> alunos) {
         String[][] dadosAlunos;
         dadosAlunos = new String[alunos.size()][camposAlunos.length];
         int posicao = 0;
@@ -40,6 +39,18 @@ public class AcademiaFacade {
         DefaultTableModel modelo = new DefaultTableModel(
                 dadosAlunos, camposAlunos);
         return modelo;
+    }
+    
+    public static DefaultTableModel modeloDadosAlunosTodos (
+            String[] camposAlunos) {
+            List<Aluno> alunos = AlunoDAO.selecionarTodos();
+            return modeloDadosAluno(camposAlunos, alunos);
+    }
+    
+    public static DefaultTableModel modeloDadosAlunosPorNome(
+            String[] camposAlunos, String nome) {
+            List<Aluno> alunos = AlunoDAO.selecionarPorNome(nome);
+            return modeloDadosAluno(camposAlunos, alunos);
     }
 
     public static DefaultTableModel modeloDadosProfessores(String[] camposProfessor) {
@@ -139,16 +150,18 @@ public class AcademiaFacade {
                 alunoASerRemovido.getId()));
         if (!alunoASerRemovido.getListaTreinos().isEmpty()) {
             int retorno = JOptionPane.showConfirmDialog(
-                    null, "Se você remover " + alunoASerRemovido.getNome().toUpperCase() +
-                    ", todos os treinos atribuidos a ele(a) serão apagados."
-                            + " Deseja continuar?");
+                    null, "Se você remover " + alunoASerRemovido.getNome().toUpperCase()
+                    + ", todos os treinos atribuidos a ele(a) serão apagados."
+                    + " Deseja continuar?");
             if (retorno == 0) {
                 for (Treino tr : alunoASerRemovido.getListaTreinos()) {
                     TreinoDAO.remover(tr);
                 }
+                AlunoDAO.remover(alunoASerRemovido);
             }
+        } else {
+            AlunoDAO.remover(alunoASerRemovido);
         }
-        AlunoDAO.remover(alunoASerRemovido);
     }
 
     public static boolean adicionaProfessor(String nomeProfessor) {

@@ -23,6 +23,8 @@ public class AlunoDAO {
     private static final String SELECIONAR_TUDO_SQL = "Select * from aluno";
     private static final String SELECIONAR_POR_ID
             = "Select * from aluno where matricula=%d";
+    private static final String SELECIONAR_POR_NOME
+            = "Select * from aluno where nome='%s'";
 
     public static void inserir(Aluno aluno) {
         String sql;
@@ -85,6 +87,11 @@ public class AlunoDAO {
     public static List<Aluno> selecionarPorId(int matricula) {
         return selecionar(String.format(
                 SELECIONAR_POR_ID, matricula));
+    }
+    
+    public static List<Aluno> selecionarPorNome(String nome) {
+        return selecionar(String.format(
+                SELECIONAR_POR_NOME, nome));
     }
 
 }
