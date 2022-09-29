@@ -50,7 +50,6 @@ public class AlunoDAO {
     public static void remover(Aluno aluno) {
         String sql = String.format(REMOVER_SQL,
                 aluno.getId());
-        AcademiaBD.execute(sql, true);
         if (AcademiaBD.execute(sql, true)) {
             Base.mensagem("Removido com sucesso");
         }
