@@ -26,7 +26,7 @@ public class ProfessorDAO {
         String sql = String.format(INSERIR_SQL,
                 professor.getNome());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Inserido com sucesso");
+            Base.mensagem(professor.getNome() + " inserido com sucesso");
         }
     }
 
@@ -35,7 +35,8 @@ public class ProfessorDAO {
                 professor.getNome(),
                 professor.getId());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Alterado com sucesso");
+            Base.mensagem("Professor " + professor.getId() +
+                    " alterado com sucesso");
         }
     }
 
@@ -43,7 +44,8 @@ public class ProfessorDAO {
         String sql = String.format(REMOVER_SQL,
                 professor.getId());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Removido com sucesso");
+            Base.mensagem("Professor " + professor.getId() + 
+                    " removido com sucesso");
         }
     }
 

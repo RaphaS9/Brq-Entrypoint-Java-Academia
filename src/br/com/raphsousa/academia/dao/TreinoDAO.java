@@ -35,7 +35,11 @@ public class TreinoDAO {
                 treino.getDescricao()
         );
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Inserido com sucesso");
+            Aluno aluno = AlunoDAO.selecionarPorId(treino.getAluno().getId())
+                    .get(0);
+                    
+            Base.mensagem("Treino de " + treino.getTitulo() + " inserido com sucesso"
+            + " para " + aluno.getNome());
         }
     }
 
@@ -49,7 +53,7 @@ public class TreinoDAO {
                 treino.getId()
         );
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Alterado com sucesso");
+            Base.mensagem("Treino " + treino.getId() + " alterado com sucesso");
         }
     }
 
@@ -57,7 +61,7 @@ public class TreinoDAO {
         String sql = String.format(REMOVER_SQL,
                 treino.getId());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Removido com sucesso");
+            Base.mensagem("Treino " + treino.getId() + " removido com sucesso");
         }
     }
 

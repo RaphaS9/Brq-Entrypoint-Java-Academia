@@ -11,6 +11,7 @@ import br.com.raphsousa.academia.modelo.entidades.Professor;
 import br.com.raphsousa.academia.modelo.entidades.Treino;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AcademiaFacade {
@@ -134,6 +135,19 @@ public class AcademiaFacade {
     }
 
     public static void removeAluno(Aluno alunoASerRemovido) {
+        alunoASerRemovido.setListaTreinos(TreinoDAO.selecionarPorMatricula(
+                alunoASerRemovido.getId()));
+        if (!alunoASerRemovido.getListaTreinos().isEmpty()) {
+            int retorno = JOptionPane.showConfirmDialog(
+                    null, "Se você remover " + alunoASerRemovido.getNome().toUpperCase() +
+                    ", todos os treinos atribuidos a ele(a) serão apagados."
+                            + " Deseja continuar?");
+            if (retorno == 0) {
+                for (Treino tr : alunoASerRemovido.getListaTreinos()) {
+                    TreinoDAO.remover(tr);
+                }
+            }
+        }
         AlunoDAO.remover(alunoASerRemovido);
     }
 
@@ -215,8 +229,8 @@ public class AcademiaFacade {
             Base.mensagem("Nenhum campo pode ser nulo");
         }
     }
-    
+
     public static void removeTreino(Treino treino) {
-         TreinoDAO.remover(treino);
+        TreinoDAO.remover(treino);
     }
 }

@@ -31,7 +31,7 @@ public class AlunoDAO {
                 aluno.getDataNascimentoString(),
                 aluno.getGenero());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Inserido com sucesso");
+            Base.mensagem(aluno.getNome() + " inserido com sucesso");
         }
     }
 
@@ -43,7 +43,8 @@ public class AlunoDAO {
                 aluno.getId());
         AcademiaBD.execute(sql, true);
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Alterado com sucesso");
+            Base.mensagem("Aluno de matricula " +aluno.getId() + 
+                    " alterado com sucesso");
         }
     }
 
@@ -51,7 +52,8 @@ public class AlunoDAO {
         String sql = String.format(REMOVER_SQL,
                 aluno.getId());
         if (AcademiaBD.execute(sql, true)) {
-            Base.mensagem("Removido com sucesso");
+            Base.mensagem("Aluno de matricula " +aluno.getId() + 
+                    " removido com sucesso");
         }
     }
 
