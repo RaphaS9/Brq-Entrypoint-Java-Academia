@@ -8,8 +8,9 @@ import java.sql.SQLException;
 public class AcademiaBD {
 
     public static void inicializar() {
-        String sql;Connection con = conectar();
-        
+        String sql;
+        Connection con = conectar();
+
         sql = "Create database if not exists academia";
         execute(sql, true);
         sql = "Use academia";
@@ -21,7 +22,7 @@ public class AcademiaBD {
         sql = "Drop table if exists professor";
         execute(sql, true);
 
-        sql = "Create table if not exists aluno (" 
+        sql = "Create table if not exists aluno ("
                 + "matricula int not null auto_increment primary key,\n"
                 + "nome varchar(50) not null,\n"
                 + "dataNasc date not null,\n"
@@ -45,6 +46,39 @@ public class AcademiaBD {
     }
 
     public static void popular() {
+        String sql;
+        Connection con = conectar();
+
+//        insers aluno
+        sql = "insert into aluno(nome, dataNasc, genero)"
+                + " values('Raphael Sousa', '2002/01/09', 'Masculino')";
+        execute(sql, true);
+        sql = "insert into aluno(nome, dataNasc, genero)"
+                + " values('Cid andrade', '2000/01/01', 'Masculino')";
+        execute(sql, true);
+        sql = "insert into aluno(nome, dataNasc, genero)"
+                + " values('Fernanda Montenegro', '1960/10/30', 'Feminino')";
+        execute(sql, true);
+//        inserts professor
+        sql = "insert into professor (nome) values ('Alexandre Mattos')";
+        execute(sql, true);
+        sql = "insert into professor (nome) values ('Thiago Silva')";
+        execute(sql, true);
+        sql = "insert into professor (nome) values ('Mateus Andrade')";
+        execute(sql, true);
+//        inserts treino
+        sql = "insert into treino(matriculaAluno, idProfessor, titulo, descricao)"
+                + " values(1, 1, 'Peito', "
+                + "'Supino, Supino com alteres, Crucifixo')";
+        execute(sql, true);
+        sql = "insert into treino(matriculaAluno, idProfessor, titulo, descricao)"
+                + " values(2, 3, 'Costas', "
+                + "'Pulley, Remada, Remada Corda')";
+        execute(sql, true);
+        sql = "insert into treino(matriculaAluno, idProfessor, titulo, descricao)"
+                + " values(3, 2, 'Biceps', "
+                + "'Rosca Scott, Rosca barra W, Rosca Martelo')";
+        execute(sql, true);
     }
 
     public static boolean execute(String sql, boolean continuaNoErro) {
@@ -66,7 +100,7 @@ public class AcademiaBD {
     public static Connection conectar() {
         Connection con = null;
         final String USUARIO = "root";
-        final String SENHA = "";
+        final String SENHA = "Guardaroupa09";
         final String URL = "jdbc:mysql://localhost/academia";
         try {
             con = DriverManager.getConnection(URL,

@@ -1,33 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.raphsousa.academia.front;
 
 import br.com.raphsousa.academia.Base;
-import br.com.raphsousa.academia.dao.AlunoDAO;
-import br.com.raphsousa.academia.dao.ProfessorDAO;
-import br.com.raphsousa.academia.dao.TreinoDAO;
+import br.com.raphsousa.academia.controller.AcademiaFacade;
 import br.com.raphsousa.academia.enums.Genero;
-import br.com.raphsousa.academia.modelo.bd.AcademiaBD;
-import br.com.raphsousa.academia.modelo.entidades.Aluno;
-import br.com.raphsousa.academia.modelo.entidades.Professor;
-import br.com.raphsousa.academia.modelo.entidades.Treino;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import br.com.raphsousa.academia.modelo.entidades.*;
 import java.util.Date;
-import java.util.List;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.JTextComponent;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
-/**
- *
- * @author idrap
- */
 public class AcademiaGUI extends javax.swing.JFrame {
 
     /**
@@ -35,7 +14,8 @@ public class AcademiaGUI extends javax.swing.JFrame {
      */
     public AcademiaGUI() {
         initComponents();
-//        AcademiaBD.inicializar();
+        AcademiaFacade.InicializarBD();
+        AcademiaFacade.populaBD();
         populaTabelas();
         populaCombos();
         AutoCompleteDecorator.decorate(jcbAlunos);
@@ -46,64 +26,32 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void populaTabelas() {
         populaTabelaAlunos();
         populaTabelaProfessores();
-        populaTabelaTreinos(TreinoDAO.selecionarTodos());
+        populaTabelaTreinos();
     }
 
     private void populaTabelaAlunos() {
         String[] camposAlunos = {"Matricula", "Nome", "Idade",
             "Genero"};
-        List<Aluno> alunos = AlunoDAO.selecionarTodos();
-        String[][] dadosAlunos;
-        dadosAlunos = new String[alunos.size()][camposAlunos.length];
-        int posicao = 0;
-        for (Aluno al : alunos) {
-            String[] umAluno = new String[camposAlunos.length];
-            umAluno[0] = String.valueOf(al.getId());
-            umAluno[1] = al.getNome();
-            umAluno[2] = String.valueOf(al.getIdade());
-            umAluno[3] = al.getGenero().getGenero();
-            dadosAlunos[posicao++] = umAluno;
-        }
-        DefaultTableModel modelo = new DefaultTableModel(
-                dadosAlunos, camposAlunos);
-        jtAlunos.setModel(modelo);
+        jtAlunos.setModel(AcademiaFacade.modeloDadosAluno(camposAlunos));
     }
 
     private void populaTabelaProfessores() {
         String[] camposProfessor = {"Id", "Nome"};
-        List<Professor> professores = ProfessorDAO.selecionarTodos();
-        String[][] dadosProfessores;
-        dadosProfessores = new String[professores.size()][camposProfessor.length];
-        int posicao = 0;
-        for (Professor prof : professores) {
-            String[] umAluno = new String[camposProfessor.length];
-            umAluno[0] = String.valueOf(prof.getId());
-            umAluno[1] = prof.getNome();
-            dadosProfessores[posicao++] = umAluno;
-        }
-        DefaultTableModel modelo = new DefaultTableModel(
-                dadosProfessores, camposProfessor);
-        jtProfessores.setModel(modelo);
+        jtProfessores.setModel(AcademiaFacade.modeloDadosProfessores(
+                camposProfessor));
     }
 
-    private void populaTabelaTreinos(List<Treino> treinos) {
+    private void populaTabelaTreinos() {
         String[] camposTreino = {"Id", "matriculaAluno", "idProfessor",
             "titulo", "descricao"};
-        String[][] dadosTreinos;
-        dadosTreinos = new String[treinos.size()][camposTreino.length];
-        int posicao = 0;
-        for (Treino tr : treinos) {
-            String[] umAluno = new String[camposTreino.length];
-            umAluno[0] = String.valueOf(tr.getId());
-            umAluno[1] = String.valueOf(tr.getAluno().getId());
-            umAluno[2] = String.valueOf(tr.getProfessor().getId());
-            umAluno[3] = tr.getTitulo();
-            umAluno[4] = tr.getDescricao();
-            dadosTreinos[posicao++] = umAluno;
-        }
-        DefaultTableModel modelo = new DefaultTableModel(
-                dadosTreinos, camposTreino);
-        jtTreinos.setModel(modelo);
+        jtTreinos.setModel(AcademiaFacade.modeloDadosTreinosTodos(camposTreino));
+    }
+
+    private void populaTabelaTreinosPorMatricula(int matricula) {
+        String[] camposTreino = {"Id", "matriculaAluno", "idProfessor",
+            "titulo", "descricao"};
+        jtTreinos.setModel(AcademiaFacade.modeloDadosTreinosPorMatricula(
+                camposTreino, matricula));
     }
 
     private void populaCombos() {
@@ -114,26 +62,37 @@ public class AcademiaGUI extends javax.swing.JFrame {
 
     private void populaComboboxGenero() {
         jcbGeneroAluno.removeAllItems();
-        Genero[] arrayGenero = Genero.values();
-        for (Genero gn : arrayGenero) {
+        for (Genero gn : AcademiaFacade.getGeneroValues()) {
             jcbGeneroAluno.addItem(gn.toString());
         }
     }
 
     private void populaComboAlunos() {
         jcbAlunos.removeAllItems();
-        List<Aluno> listaAlunos = AlunoDAO.selecionarTodos();
-        for (Aluno al : listaAlunos) {
-            jcbAlunos.addItem(String.valueOf(al.getId()));
-        }
+//        Implementação forEachReamaining que é um metodo de Iterator, 
+//        como estou usando a collection List que implementa um iterator proprio
+//        Desta forma não importo nada nesta classe cliente
+//        CODIGO EQUIVALENTE: 
+//        List<Aluno> listaAlunos = AlunoDAO.selecionarTodos();
+//        for (Aluno al : listaAlunos) {
+//            jcbAlunos.addItem(String.valueOf(al.getId()));
+        AcademiaFacade.getListaTodosAlunos().iterator().forEachRemaining((al)
+                -> jcbAlunos.addItem(String.valueOf(al.getId())));
     }
 
     private void populaComboProfessores() {
+//        Implementação forEachReamaining que é um metodo de Iterator, 
+//        como estou usando a collection List que implementa um iterator proprio
+//        Desta forma não importo nada nesta classe cliente
+//
+//        CODIGO EQUIVALENTE: 
+//        List<Professor> listaProfessores = ProfessorDAO.selecionarTodos();
+//        for (Professor prof : listaProfessores) {
+//            jcbProfessores.addItem(String.valueOf(prof.getId()));
+
         jcbProfessores.removeAllItems();
-        List<Professor> listaProfessores = ProfessorDAO.selecionarTodos();
-        for (Professor prof : listaProfessores) {
-            jcbProfessores.addItem(String.valueOf(prof.getId()));
-        }
+        AcademiaFacade.getListaTodosProfessores().iterator().forEachRemaining((prof)
+                -> jcbProfessores.addItem(String.valueOf(prof.getId())));
     }
 
     /**
@@ -163,7 +122,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        dtcAluno = new com.toedter.calendar.JDateChooser("dd/MM/yyyy" , "##/##/##" , ' ');
+        dtcNascimentoAluno = new com.toedter.calendar.JDateChooser("dd/MM/yyyy" , "##/##/##" , ' ');
         jLabel10 = new javax.swing.JLabel();
         jcbGeneroAluno = new javax.swing.JComboBox<>();
         txfNomeAluno = new javax.swing.JTextField();
@@ -351,7 +310,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(dtcAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(dtcNascimentoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -363,7 +322,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dtcAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dtcNascimentoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel9)
                         .addComponent(txfNomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -710,31 +669,57 @@ public class AcademiaGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private Aluno getAlunoPorLinha(int linhaSelecionada) {
+    private Object[] dadosAluno(int linhaSelecionada) {
+        Object[] retorno = new Object[3];
         String matriculaString = (String) jtAlunos.getValueAt(linhaSelecionada,
                 0);
         int idInt = Integer.parseInt(matriculaString);
-
         String nomeSelecionado = (String) jtAlunos.getValueAt(linhaSelecionada,
                 1);
         String generoSelecionado = (String) jtAlunos.getValueAt(linhaSelecionada,
                 3);
-        Aluno aluno = new Aluno(idInt, nomeSelecionado, Genero.getGenero(
-                generoSelecionado));
-        Date dataNasc = AlunoDAO.selecionarPorId(aluno.getId()).get(0)
-                .getDataNascimento();
-        aluno.setDataNascimento(dataNasc);
-        return aluno;
+
+        retorno[0] = idInt;
+        retorno[1] = nomeSelecionado;
+        retorno[2] = generoSelecionado;
+
+        return retorno;
     }
 
-    private Professor getProfessorPorLinha(int linhaSelecionada) {
+    private Object[] dadosProfessor(int linhaSelecionada) {
         String idString = (String) jtProfessores.getValueAt(linhaSelecionada, 0);
         String nomeProfessorSelecionado = (String) jtProfessores.getValueAt(
                 linhaSelecionada, 1);
-
         int idInt = Integer.parseInt(idString);
-        Professor professor = new Professor(idInt, nomeProfessorSelecionado);
-        return professor;
+
+        Object[] retorno = new Object[2];
+        retorno[0] = idInt;
+        retorno[1] = nomeProfessorSelecionado;
+
+        return retorno;
+    }
+
+    private Object[] dadosTreino(int linhaSelecionada) {
+        String idString = (String) jtTreinos.getValueAt(linhaSelecionada, 0);
+        int idInt = Integer.parseInt(idString);
+
+        String matriculaAluno = (String) jtTreinos.getValueAt(linhaSelecionada, 1);
+        int matriculaAlunoInt = Integer.parseInt(matriculaAluno);
+
+        String idProfessor = (String) jtTreinos.getValueAt(linhaSelecionada, 2);
+        int idProfessorInt = Integer.parseInt(idProfessor);
+
+        String tituloTreino = (String) jtTreinos.getValueAt(linhaSelecionada, 3);
+        String descTreino = (String) jtTreinos.getValueAt(linhaSelecionada, 4);
+
+        Object[] retorno = new Object[5];
+        retorno[0] = idInt;
+        retorno[1] = matriculaAlunoInt;
+        retorno[2] = idProfessorInt;
+        retorno[3] = tituloTreino;
+        retorno[4] = descTreino;
+        
+        return retorno;
     }
 
     private Treino getTreinoPorLinha(int linhaSelecionada) {
@@ -762,35 +747,29 @@ public class AcademiaGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbAlunosActionPerformed
 
     private void btnAdicionaAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaAlunoActionPerformed
-        String nomeAluno = txfNomeAluno.getText();
-        Date dataNascimentoAluno = this.dtcAluno.getDate();
-        String generoAlunoString = jcbGeneroAluno.getSelectedItem().toString();
-        if (!(nomeAluno.isEmpty()) && !generoAlunoString.isEmpty()
-                && dataNascimentoAluno != null) {
-            Aluno alunoASerAdicionado = new Aluno(nomeAluno, dataNascimentoAluno,
-                    Genero.getGenero(generoAlunoString));
-            AlunoDAO.inserir(alunoASerAdicionado);
+        if (AcademiaFacade.adicionaAluno(
+                txfNomeAluno.getText(),
+                dtcNascimentoAluno.getDate(),
+                jcbGeneroAluno.getSelectedItem().toString())) {
             populaTabelaAlunos();
             populaComboAlunos();
-        } else {
-            Base.mensagemDeErro("Nenhum campo pode ser nulo");
         }
     }//GEN-LAST:event_btnAdicionaAlunoActionPerformed
 
     private void btnAlterarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarAlunoActionPerformed
         int linhaSelecionada = jtAlunos.getSelectedRow();
         if (jtAlunos.isRowSelected(linhaSelecionada)) {
-            Aluno alunoASerAlterado = getAlunoPorLinha(linhaSelecionada);
-
+            Aluno alunoASerAlterado = AcademiaFacade.
+                    retornaAlunoSelecionadoComDataNasc(
+                            dadosAluno(linhaSelecionada));
             String nomeAluno = txfNomeAluno.getText();
-            Date dataNascimentoAluno = dtcAluno.getDate();
+            Date dataNascimentoAluno = dtcNascimentoAluno.getDate();
             String generoAlunoString = jcbGeneroAluno.getSelectedItem().toString();
+
             if (!(nomeAluno.isEmpty()) && !generoAlunoString.isEmpty()
                     && dataNascimentoAluno != null) {
-                alunoASerAlterado.setNome(nomeAluno);
-                alunoASerAlterado.setDataNascimento(dataNascimentoAluno);
-                alunoASerAlterado.setGenero(Genero.getGenero(generoAlunoString));
-                AlunoDAO.alterar(alunoASerAlterado);
+                AcademiaFacade.alteraAluno(alunoASerAlterado, nomeAluno,
+                        dataNascimentoAluno, generoAlunoString);
                 populaTabelaAlunos();
             } else {
                 Base.mensagemDeErro("Nenhum campo pode ser nulo");
@@ -801,26 +780,26 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void btnDeletaAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletaAlunoActionPerformed
         int linhaSelecionada = jtAlunos.getSelectedRow();
         if (jtAlunos.isRowSelected(linhaSelecionada)) {
-            Aluno aluno = getAlunoPorLinha(linhaSelecionada);
-            AlunoDAO.remover(aluno);
+            Aluno alunoASerRemovido = AcademiaFacade.
+                    retornaAlunoSelecionadoComDataNasc(dadosAluno(linhaSelecionada));
+            AcademiaFacade.removeAluno(alunoASerRemovido);
             populaTabelaAlunos();
         }
     }//GEN-LAST:event_btnDeletaAlunoActionPerformed
 
     private void jtAlunosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtAlunosMouseClicked
-        // TODO add your handling code here:
-
         int linhaSelecionada = jtAlunos.getSelectedRow();
         if (jtAlunos.isRowSelected(linhaSelecionada)) {
-            Aluno aluno = getAlunoPorLinha(linhaSelecionada);
-            txfNomeAluno.setText(aluno.getNome());
-            dtcAluno.setDate(aluno.getDataNascimento());
-            jcbGeneroAluno.setSelectedIndex(0);
+            txfNomeAluno.setText(AcademiaFacade.retornaAlunoSelecionadoComDataNasc(
+                    dadosAluno(linhaSelecionada)).getNome());
+            dtcNascimentoAluno.setDate(AcademiaFacade.retornaAlunoSelecionadoComDataNasc(
+                    dadosAluno(linhaSelecionada)).getDataNascimento());
 
             int size = jcbGeneroAluno.getItemCount();
             for (int i = 0; i < size; i++) {
-                if (aluno.getGenero().toString().equalsIgnoreCase(
-                        jcbGeneroAluno.getItemAt(i))) {
+                if (AcademiaFacade.retornaAlunoSelecionadoComDataNasc(dadosAluno(linhaSelecionada)).getGenero()
+                        .toString().equalsIgnoreCase(
+                                jcbGeneroAluno.getItemAt(i))) {
                     jcbGeneroAluno.setSelectedIndex(i);
                 }
             }
@@ -829,14 +808,9 @@ public class AcademiaGUI extends javax.swing.JFrame {
 
     private void btnAdicionaProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionaProfessorActionPerformed
         String nomeProfessor = txfNomeProfessor.getText();
-        if (!nomeProfessor.isEmpty()) {
-            Professor professorASerInserido = new Professor(nomeProfessor);
-            ProfessorDAO.inserir(professorASerInserido);
-            populaTabelaProfessores();
+        if (AcademiaFacade.adicionaProfessor(nomeProfessor)) {
             populaComboProfessores();
-
-        } else {
-            Base.mensagemDeErro("Nenhum campo pode ser nulo");
+            populaTabelaProfessores();
         }
 
     }//GEN-LAST:event_btnAdicionaProfessorActionPerformed
@@ -844,22 +818,19 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void btnEditaProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditaProfessorActionPerformed
         int linhaSelecionada = jtProfessores.getSelectedRow();
         if (jtProfessores.isRowSelected(linhaSelecionada)) {
-            Professor professorASerAlterado = getProfessorPorLinha(linhaSelecionada);
+            Professor professorASerAlterado = AcademiaFacade.retornaProfessorSelecionado(
+                    dadosProfessor(linhaSelecionada));
             String nomeProfessor = txfNomeProfessor.getText();
-            if (!nomeProfessor.isEmpty()) {
-                professorASerAlterado.setNome(nomeProfessor);
-                ProfessorDAO.alterar(professorASerAlterado);
-                populaTabelaProfessores();
-            } else {
-                Base.mensagemDeErro("Nenhum campo pode ser nulo");
-            }
+            AcademiaFacade.alteraProfessor(professorASerAlterado, nomeProfessor);
+            populaTabelaProfessores();
         }
     }//GEN-LAST:event_btnEditaProfessorActionPerformed
 
     private void jtProfessoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtProfessoresMouseClicked
         int linhaSelecionada = jtProfessores.getSelectedRow();
         if (jtProfessores.isRowSelected(linhaSelecionada)) {
-            Professor professor = getProfessorPorLinha(linhaSelecionada);
+            Professor professor = AcademiaFacade.retornaProfessorSelecionado(
+                    dadosProfessor(linhaSelecionada));
             txfNomeProfessor.setText(professor.getNome());
         }
     }//GEN-LAST:event_jtProfessoresMouseClicked
@@ -867,8 +838,9 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void btnDeletaProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletaProfessorActionPerformed
         int linhaSelecionada = jtProfessores.getSelectedRow();
         if (jtProfessores.isRowSelected(linhaSelecionada)) {
-            Professor professor = getProfessorPorLinha(linhaSelecionada);
-            ProfessorDAO.remover(professor);
+            Professor professor = AcademiaFacade.retornaProfessorSelecionado(
+                    dadosProfessor(linhaSelecionada));
+            AcademiaFacade.removeProfessor(professor);
             populaTabelaProfessores();
         }
     }//GEN-LAST:event_btnDeletaProfessorActionPerformed
@@ -877,57 +849,34 @@ public class AcademiaGUI extends javax.swing.JFrame {
         String tituloTreino = txfTituloTreino.getText();
         String descTreino = txaDescricaoTreino.getText();
 
-        if (!tituloTreino.isEmpty() && !descTreino.isEmpty()) {
-            String matriculaAlunoString = jcbAlunos.getSelectedItem().toString();
-            int matriculaAlunoInt = Integer.parseInt(matriculaAlunoString);
-            String idProfessorString = jcbProfessores.getSelectedItem().toString();
-            int idProfessorInt = Integer.parseInt(idProfessorString);
+        String matriculaAlunoString = jcbAlunos.getSelectedItem().toString();
+        int matriculaAlunoInt = Integer.parseInt(matriculaAlunoString);
+        String idProfessorString = jcbProfessores.getSelectedItem().toString();
+        int idProfessorInt = Integer.parseInt(idProfessorString);
 
-            Aluno alunoAReceberTreino = new Aluno(matriculaAlunoInt);
-            Professor professorADarTreino = new Professor(idProfessorInt);
-
-            Treino treinoASerInserido = new Treino(alunoAReceberTreino,
-                    professorADarTreino, tituloTreino, descTreino);
-
-            TreinoDAO.inserir(treinoASerInserido);
-//            populaTabelaTreinos();
-            List<Treino> treinos = TreinoDAO.selecionarTodos();
-            populaTabelaTreinos(treinos);
-        } else {
-            Base.mensagem("Nenhum campo pode ser nulo");
-        }
-
+        AcademiaFacade.adicionaTreino(matriculaAlunoInt,
+                idProfessorInt, tituloTreino, descTreino);
+        populaTabelaTreinos();
     }//GEN-LAST:event_btnAdicionarTreinoActionPerformed
 
     private void btnAlterarTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarTreinoActionPerformed
         int linhaSelecionada = jtTreinos.getSelectedRow();
         if (jtTreinos.isRowSelected(linhaSelecionada)) {
-            Treino treino = getTreinoPorLinha(linhaSelecionada);
+            
+            Treino treinoASerAlterado = AcademiaFacade.retornaTreinoSelecionado(
+                    dadosTreino(linhaSelecionada));
+            
             String tituloTreino = txfTituloTreino.getText();
             String descTreino = txaDescricaoTreino.getText();
-            if (!tituloTreino.isEmpty() && !descTreino.isEmpty()) {
-                treino.setTitulo(tituloTreino);
-                treino.setDescricao(descTreino);
+            String matriculaAlunoString = jcbAlunos.getSelectedItem().toString();
+            int matriculaAlunoInt = Integer.parseInt(matriculaAlunoString);
 
-                String matriculaAlunoString = jcbAlunos.getSelectedItem().toString();
-                int matriculaAlunoInt = Integer.parseInt(matriculaAlunoString);
-
-                String idProfessorString = jcbProfessores.getSelectedItem().toString();
-                int idProfessorInt = Integer.parseInt(idProfessorString);
-
-                Aluno alunoAReceberTreino = new Aluno(matriculaAlunoInt);
-                Professor professorADarTreino = new Professor(idProfessorInt);
-
-                treino.setAluno(alunoAReceberTreino);
-                treino.setProfessor(professorADarTreino);
-
-                TreinoDAO.alterar(treino);
-//                populaTabelaTreinos();
-                List<Treino> treinos = TreinoDAO.selecionarTodos();
-                populaTabelaTreinos(treinos);
-            } else {
-                Base.mensagemDeErro("Nenhum campo pode ser nulo");
-            }
+            String idProfessorString = jcbProfessores.getSelectedItem().toString();
+            int idProfessorInt = Integer.parseInt(idProfessorString);
+            
+            AcademiaFacade.alteraTreino(treinoASerAlterado, matriculaAlunoInt,
+                    idProfessorInt, tituloTreino, descTreino);
+            populaTabelaTreinos();
         }
 
     }//GEN-LAST:event_btnAlterarTreinoActionPerformed
@@ -935,10 +884,14 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void jtTreinosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtTreinosMouseClicked
         int linhaSelecionada = jtTreinos.getSelectedRow();
         if (jtTreinos.isRowSelected(linhaSelecionada)) {
-            Treino treino = getTreinoPorLinha(linhaSelecionada);
+            Treino treino = AcademiaFacade.retornaTreinoSelecionado(
+                    dadosTreino(linhaSelecionada));
             txfTituloTreino.setText(treino.getTitulo());
             txaDescricaoTreino.setText(treino.getDescricao());
-
+            
+//            seleciona o item do comobobox de acordo com minha linha selecionada
+//            percorre o combo box atraves do index e confere se o valor é igual a
+//            minha string id
             int size = jcbAlunos.getItemCount();
             for (int i = 0; i < size; i++) {
                 String idString = String.valueOf(treino.getAluno().getId());
@@ -961,24 +914,20 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private void btnRemoverTreinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverTreinoActionPerformed
         int linhaSelecionada = jtTreinos.getSelectedRow();
         if (jtTreinos.isRowSelected(linhaSelecionada)) {
-            Treino treino = getTreinoPorLinha(linhaSelecionada);
-            TreinoDAO.remover(treino);
-//            populaTabelaTreinos();
-            List<Treino> treinos = TreinoDAO.selecionarTodos();
-            populaTabelaTreinos(treinos);
+            Treino treino = AcademiaFacade.retornaTreinoSelecionado(
+                    dadosTreino(linhaSelecionada));
+            AcademiaFacade.removeTreino(treino);
+            populaTabelaTreinos();
         }
     }//GEN-LAST:event_btnRemoverTreinoActionPerformed
 
     private void btnSelecionaTreinoPorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionaTreinoPorIDActionPerformed
-        // TODO add your handling code here:
-
         String idMatriculaString = txfSelecionaPorIdTreino.getText();
         if (!idMatriculaString.isBlank()) {
             int matriculaInt = Integer.parseInt(idMatriculaString);
-            List<Treino> treinos = TreinoDAO.selecionarPorMatricula(matriculaInt);
-            populaTabelaTreinos(treinos);
+            populaTabelaTreinosPorMatricula(matriculaInt);
         } else {
-            populaTabelaTreinos(TreinoDAO.selecionarTodos());
+            populaTabelaTreinos();
         }
     }//GEN-LAST:event_btnSelecionaTreinoPorIDActionPerformed
 
@@ -1028,7 +977,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnEditaProfessor;
     private javax.swing.JButton btnRemoverTreino;
     private javax.swing.JButton btnSelecionaTreinoPorID;
-    private com.toedter.calendar.JDateChooser dtcAluno;
+    private com.toedter.calendar.JDateChooser dtcNascimentoAluno;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
