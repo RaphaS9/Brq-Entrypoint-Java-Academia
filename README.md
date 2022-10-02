@@ -104,7 +104,8 @@ A seguir alguns gifs com a demonstração do funcionamento pleno do programa par
 ## Configuração
 ### Conexão Banco de Dados
 Antes de iniciar o projeto deve-se alterar no código [academiaBD - linha 100](./src/br/com/raphsousa/academia/modelo/bd/AcademiaBD.java) para o usuário e senha do seu mysql e criar o banco de dados utilizado no mysql, no caso "academia" (comando "Create database academia"). Após isso estará pronto para ser iniciado
-<br><br
+<br>
+
 ```java
     public static Connection conectar() {
         Connection con = null;
