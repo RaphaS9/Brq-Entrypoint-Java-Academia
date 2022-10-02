@@ -789,6 +789,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
             AcademiaFacade.removeAluno(alunoASerRemovido);
             populaTabelaAlunos();
             populaTabelaTreinos();
+            populaComboAlunos();
         }
     }//GEN-LAST:event_btnDeletaAlunoActionPerformed
 
@@ -847,6 +848,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
                     dadosProfessor(linhaSelecionada));
             AcademiaFacade.removeProfessor(professor);
             populaTabelaProfessores();
+            populaComboProfessores();
         }
     }//GEN-LAST:event_btnDeletaProfessorActionPerformed
 

@@ -23,7 +23,7 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
 2. [Descrição do Sistema](#descrição-do-Sistema)
     - [Requisitos Funcionais do Sistema](#requisitos-funcionais-do-sistema)
     - [Descrição do Banco de dados](#descrição-do-banco-de-dados)
-    - [Uml entidades](#uml-das-entidades)
+    - [Uml das entidades](#uml-das-entidades)
     - [Uml classes DAO](#uml-das-classes-dao)
 <br><br>
 
@@ -70,3 +70,21 @@ Tabela Treino recebe os id/matricula de professor e aluno, o Nome do treino e um
 
 ## UML das Classes DAO
 ![UML das Classes DAO](./readmeImgs/DescricaoSistema/umlDAO.png)
+<br><br>
+
+# Demonstração do Programa
+A seguir alguns gifs com a demonstração do funcionamento pleno do programa para referência.
+
+## Tabela Professores - Crud Completo
+![Crud Professores](./readmeImgs/InterfaceGrafica/Professor/crudProfessor.gif)
+<br><br>
+
+## Tabela Alunos - Crud Completo
+![Crud Alunos](./readmeImgs/InterfaceGrafica/Aluno/crudAluno.gif)
+
+## Tabela Treinos - Crud Completo
+![Crud Treinos](./readmeImgs/InterfaceGrafica/Treino/crudTreino.gif)
+<br><br>
+
+## Apagando alunos com treinos registrados
+![Apagando alunos com treinos](./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif)
