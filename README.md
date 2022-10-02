@@ -30,15 +30,18 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
     - [Tabela Alunos - Crud Completo](#tabela-alunos---crud-completo)
     - [Tabela Treinos - Crud Completo](#tabela-treinos---crud-completo)
     - [Apagando alunos com treinos registrados](#apagando-alunos-com-treinos-registrados)
+4. [Configuração](#configuração)
 <br><br>
 
 # Aprendizados e Conceitos utilizados
 
-- Facade pattern
+- Facade pattern ([Link da aula (A partir de 2:39:00)](https://drive.google.com/file/d/1IJ41peZxeZjh6FILkBide3aBz8K3-8kZ/view))
+    - [Código facade](./src/br/com/raphsousa/academia/controller/AcademiaFacade.java)
+    Na outra branch é possivel visualizar como ficaria o código sem facade (vá até o arquivo academiGUI)
 - DAO pattern
-- Hereditarieade
+- Hereditariedade
 - JDBC
-- Formatação e inserção de datas no BD (SimpleDaateFormat)
+- Formatação e inserção de datas no BD (SimpleDateFormat) - [Código](./src/br/com/raphsousa/academia/modelo/entidades/Aluno.java)
 - Interface gráfica do Java
 - JDateChooser (calendario para escolher datas na interface gráfica)
 - Autocomplete de comboboxes
@@ -97,3 +100,26 @@ A seguir alguns gifs com a demonstração do funcionamento pleno do programa par
 ## Apagando alunos com treinos registrados
 <img src="./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif" alt="Apagando alunos com treinos" width="525" height="360" />
 <!-- ![Apagando alunos com treinos](./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif) -->
+
+## Configuração
+### Conexão Banco de Dados
+Antes de iniciar o projeto deve-se alterar no código [academiaBD - linha 100](./src/br/com/raphsousa/academia/modelo/bd/AcademiaBD.java) para o usuário e senha do seu mysql e criar o banco de dados utilizado no mysql, no caso "academia" (comando "Create database academia"). Após isso estará pronto para ser iniciado
+<br><br
+```java
+    public static Connection conectar() {
+        Connection con = null;
+        final String USUARIO = "root";
+        final String SENHA = "";
+        final String URL = "jdbc:mysql://localhost/academia";
+        try {
+            con = DriverManager.getConnection(URL,
+                    USUARIO, SENHA);
+        } catch (SQLException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            System.exit(1);
+        }
+        return con;
+    }
+```
+
+<!-- ![Config conexao bd](./readmeImgs/Configuracao/configuracaoConexaoBD.png) -->
