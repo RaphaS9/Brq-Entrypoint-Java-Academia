@@ -131,7 +131,7 @@ public class AcademiaFacade {
         String generoString = (String) dadosAluno[2];
         Genero genero = Genero.getGenero(generoString);
         Aluno aluno = new Aluno(matricula, nome, genero);
-        Date dataNasc = AlunoDAO.selecionarPorId(aluno.getId()).get(0)
+        Date dataNasc = AlunoDAO.selecionarPorMatricula(aluno.getId()).get(0)
                 .getDataNascimento();
         aluno.setDataNascimento(dataNasc);
         return aluno;

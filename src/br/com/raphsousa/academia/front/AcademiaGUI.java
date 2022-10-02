@@ -20,7 +20,6 @@ public class AcademiaGUI extends javax.swing.JFrame {
         populaCombos();
         AutoCompleteDecorator.decorate(jcbAlunos);
         AutoCompleteDecorator.decorate(jcbProfessores);
-
     }
 
     private void populaTabelas() {
@@ -789,6 +788,7 @@ public class AcademiaGUI extends javax.swing.JFrame {
                     retornaAlunoSelecionadoComDataNasc(dadosAluno(linhaSelecionada));
             AcademiaFacade.removeAluno(alunoASerRemovido);
             populaTabelaAlunos();
+            populaTabelaTreinos();
         }
     }//GEN-LAST:event_btnDeletaAlunoActionPerformed
 

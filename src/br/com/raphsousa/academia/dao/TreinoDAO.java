@@ -27,7 +27,6 @@ public class TreinoDAO {
     
     public static void inserir(Treino treino) {
         String sql;
-        String desc = treino.getDescricao();
         sql = String.format(INSERIR_SQL,
                 treino.getAluno().getId(),
                 treino.getProfessor().getId(),
@@ -35,7 +34,7 @@ public class TreinoDAO {
                 treino.getDescricao()
         );
         if (AcademiaBD.execute(sql, true)) {
-            Aluno aluno = AlunoDAO.selecionarPorId(treino.getAluno().getId())
+            Aluno aluno = AlunoDAO.selecionarPorMatricula(treino.getAluno().getId())
                     .get(0);
                     
             Base.mensagem("Treino de " + treino.getTitulo() + " inserido com sucesso"
@@ -77,7 +76,7 @@ public class TreinoDAO {
                 String titulo = rs.getString("titulo");
                 String descricao = rs.getString("descricao");
                 lista.add(new Treino(id, 
-                        AlunoDAO.selecionarPorId(matriculaAluno).get(0), 
+                        AlunoDAO.selecionarPorMatricula(matriculaAluno).get(0), 
                         ProfessorDAO.selecionarPorId(idProfessor).get(0),
                         titulo, descricao));
             }

@@ -84,7 +84,7 @@ public class AlunoDAO {
         return selecionar(SELECIONAR_TUDO_SQL);
     }
 
-    public static List<Aluno> selecionarPorId(int matricula) {
+    public static List<Aluno> selecionarPorMatricula(int matricula) {
         return selecionar(String.format(
                 SELECIONAR_POR_ID, matricula));
     }
