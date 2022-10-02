@@ -81,15 +81,19 @@ Tabela Treino recebe os id/matricula de professor e aluno, o Nome do treino e um
 A seguir alguns gifs com a demonstração do funcionamento pleno do programa para referência.
 
 ## Tabela Professores - Crud Completo
-![Crud Professores](./readmeImgs/InterfaceGrafica/Professor/crudProfessor.gif)
+<img src="./readmeImgs/InterfaceGrafica/Professor/crudProfessor.gif" alt="Crud Professores" width="525" height="360" />
+<!-- ![Crud Professores](./readmeImgs/InterfaceGrafica/Professor/crudProfessor.gif) -->
 <br><br>
 
 ## Tabela Alunos - Crud Completo
-![Crud Alunos](./readmeImgs/InterfaceGrafica/Aluno/crudAluno.gif)
+<img src="./readmeImgs/InterfaceGrafica/Aluno/crudAluno.gif" alt="Crud Alunos" width="525" height="360" />
+<!-- ![Crud Alunos](./readmeImgs/InterfaceGrafica/Aluno/crudAluno.gif) -->
 
 ## Tabela Treinos - Crud Completo
-![Crud Treinos](./readmeImgs/InterfaceGrafica/Treino/crudTreino.gif)
+<img src="./readmeImgs/InterfaceGrafica/Treino/crudTreino.gif" alt="Crud Treinos" width="525" height="360" />
+<!-- ![Crud Treinos](./readmeImgs/InterfaceGrafica/Treino/crudTreino.gif) -->
 <br><br>
 
 ## Apagando alunos com treinos registrados
-![Apagando alunos com treinos](./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif)
+<img src="./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif" alt="Apagando alunos com treinos" width="525" height="360" />
+<!-- ![Apagando alunos com treinos](./readmeImgs/InterfaceGrafica/apagandoAlunoComTreinos.gif) -->
