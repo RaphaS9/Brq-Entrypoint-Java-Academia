@@ -16,6 +16,7 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
 11. Documentação
 12. As-built, APU
 13. Registro de aprendizado
+<br><br>
 
 # Sumário
 1. [Aprendizados e Conceitos utilizados](#aprendizados-e-conceitos-utilizados)
@@ -24,7 +25,7 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
     - [Descrição do Banco de dados](#descrição-do-banco-de-dados)
     - [Uml entidades](#uml-das-entidades)
     - [Uml classes DAO](#uml-das-classes-dao)
-
+<br><br>
 
 # Aprendizados e Conceitos utilizados
 
@@ -36,10 +37,11 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
 - Interface gráfica do Java
 - JDateChooser (calendario para escolher datas na interface gráfica)
 - Autocomplete de comboboxes
-
+<br><br>
 
 # Descrição do Sistema
 Programa que é capaz de adicionar um treino para um aluno de academia, referenciando o professor que o deu. 
+<br>
 
 ## Requisitos Funcionais do Sistema
 1. O sistema deve permitir o CRUD de alunos, professores e treinos.
@@ -48,8 +50,7 @@ Programa que é capaz de adicionar um treino para um aluno de academia, referenc
 4. O sistema deve demonstrar os dados do banco de dados em forma de tabela na interface gráfica.
 5. O sistema deve ter um campo para selecionar treinos por ID.
 6. O sistema deve ter um campo para selecionar alunos por Nome.
-
-
+<br>
 
 ## Descrição do Banco de dados
 Tabela Aluno deve conter Matricula (Id), Nome, Data de Nascimento e Gênero, pois alguns treinos são somente aplicados a determinadas idades e gênero.
@@ -61,11 +62,11 @@ Tabela Treino recebe os id/matricula de professor e aluno, o Nome do treino e um
 ### Diagrama do Banco de dados
 
 ![Diagrama do BD](./readmeImgs/DescricaoSistema/DiagramaAcademiaBD.png)
-<br>
+<br><br>
 
 ## UML das Entidades
 ![Uml entidades do progeam](./readmeImgs/DescricaoSistema/umlEntidades.png)
-<br>
+<br><br>
 
 ## UML das Classes DAO
 ![UML das Classes DAO](./readmeImgs/DescricaoSistema/umlDAO.png)
