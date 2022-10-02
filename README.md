@@ -25,6 +25,11 @@ Enunciado: Crie um projeto com interface gráfica que contenha ao menos duas tab
     - [Descrição do Banco de dados](#descrição-do-banco-de-dados)
     - [Uml das entidades](#uml-das-entidades)
     - [Uml classes DAO](#uml-das-classes-dao)
+3. [Demonstração do Programa](#demonstração-do-programa)
+    - [Tabela Professores - Crud Completo](#tabela-professores---crud-completo)
+    - [Tabela Alunos - Crud Completo](#tabela-alunos---crud-completo)
+    - [Tabela Treinos - Crud Completo](#tabela-treinos---crud-completo)
+    - [Apagando alunos com treinos registrados](#apagando-alunos-com-treinos-registrados)
 <br><br>
 
 # Aprendizados e Conceitos utilizados
