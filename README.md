@@ -1,4 +1,3 @@
-## Exercício final do curso entrypoint JAVA da Brq, professor Cid Andrade.
 **Enunciado:** Crie um projeto com interface gráfica que contenha ao menos duas tabelas relacionadas entre si com ligação ao banco de dados.
 
 ### Branches
